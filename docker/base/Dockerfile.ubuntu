@@ -1,0 +1,22 @@
+FROM ubuntu:22.04
+
+RUN apt-get update && apt-get install -y \
+    curl \
+    wget \
+    nano \
+    vim \
+    procps \
+    apt-utils \
+    net-tools \
+    dnsutils \
+    htop \
+    iotop \
+    ufw \
+    openssl \
+    git \
+    zip \
+    unzip \
+    ca-certificates \
+    software-properties-common
+
+CMD ["tail", "-f", "/dev/null"]

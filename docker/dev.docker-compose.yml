@@ -1,0 +1,105 @@
+services:
+  php-fpm:
+    build: 
+      context: ./core/php/fpm
+      target: fpm-base
+    image: ${APP_NAME}-php-fpm
+    platform: linux/amd64
+    container_name: ${APP_NAME}-php-fpm
+    volumes: 
+      - ../dev/${APP_DIRECTORY}/${APP_BACK_SERVICE}:/var/www/html
+      - ./core/php/fpm/base/cfg/www.conf:/etc/php/8.4/fpm/pool.d/www.conf
+    networks: 
+      - main
+      - proxy
+    ports:
+      - 9000:9000  
+  php-cli:
+    build:
+      context: ./core/php/cli
+      target: cli-base
+      args:
+        - USER=${USER}  
+        - USER_ID=${USER_ID}
+        - GROUP_ID=${GROUP_ID}
+    image: ${APP_NAME}-php-cli
+    platform: linux/amd64
+    container_name: ${APP_NAME}-php-cli
+    volumes: 
+      - ../dev/${APP_DIRECTORY}/${APP_BACK_SERVICE}:/var/www/html
+    networks: 
+      - main
+  composer:
+    build:
+      context: ./core/php/cli
+      target: composer
+      args:
+        - USER=${USER}  
+        - USER_ID=${USER_ID}
+        - GROUP_ID=${GROUP_ID}
+        - DEV_MAIL=${DEV_MAIL}
+        - DEV_NAME=${DEV_NAME}
+    image: ${APP_NAME}-php-composer
+    platform: linux/amd64
+    container_name: ${APP_NAME}-php-composer
+    user: ${USER_ID}:${GROUP_ID}
+    volumes: 
+      - ../dev/${APP_DIRECTORY}/${APP_BACK_SERVICE}:/var/www/html
+  nodejs:
+    build:
+      context: ./aux/node
+      args:
+        - USER=${USER}  
+        - USER_ID=${USER_ID}
+        - GROUP_ID=${GROUP_ID}
+    image: ${APP_NAME}-nodejs
+    container_name: ${APP_NAME}-nodejs
+    volumes:
+      - ../dev/${APP_DIRECTORY}/${APP_FRONT_SERVICE}:/home/${USER}/app
+    networks:
+      - main
+      - proxy
+    ports: 
+      - 3000:3000
+  mysql:
+    build:
+      context: ./core/db/mysql
+      args:
+        - MYSQL_DATABASE=${DB_NAME}
+        - MYSQL_USER=${DB_USER_NAME}
+        - MYSQL_PASSWORD=${DB_USER_PASS}
+        - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASS}
+        - MYSQL_CHARSET=${DB_CHARSET}
+        - MYSQL_COLLATION=${DB_COLLATION}
+        - GROUP_ID=${GROUP_ID}
+    image: ${APP_NAME}-mysql
+    platform: linux/amd64
+    container_name: ${APP_NAME}-mysql
+    environment:
+        MYSQL_DATABASE: ${DB_NAME}
+        MYSQL_USER: ${DB_USER_NAME}
+        MYSQL_PASSWORD: ${DB_USER_PASS}
+        MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASS}
+        MYSQL_CHARSET: ${DB_CHARSET}
+        MYSQL_COLLATION: ${DB_COLLATION}
+        GROUP_ID: ${GROUP_ID}  
+    ports:
+      - 3306:${DB_PORT}
+    volumes:
+      - mysql:/var/lib/mysql
+    networks:
+      - main
+  #redis:
+volumes:
+  mysql:
+    name: ${APP_NAME}-mysql
+networks:
+  main:
+    name: ${APP_NAME}-main-network
+    driver: bridge
+  proxy:
+    name: ${APP_NAME}-proxy-network
+    driver: bridge  
+    external: true
+
+        

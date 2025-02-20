@@ -1,0 +1,33 @@
+services:
+  apache:
+    build:
+      context: proxy/apache
+      args:
+        - APP_HOSTNAME=${APP_HOSTNAME}
+    image: ${APP_NAME}-proxy-apache
+    container_name: ${APP_NAME}-proxy-apache
+    platform: linux/amd64
+    environment:
+      TZ: ${APP_TZ}
+      APP_NAME: ${APP_NAME}
+      APP_HOSTNAME: ${APP_HOSTNAME}
+      APP_BACK_SERVICE: ${APP_BACK_SERVICE}
+      APP_FRONT_SERVICE: ${APP_FRONT_SERVICE}
+    volumes:
+      - ./proxy/apache/logs/system:/var/log
+      - ./proxy/apache/logs/apache2:/usr/local/apache2/logs 
+      - ./proxy/apache/conf/httpd.conf:/usr/local/apache2/conf/httpd.conf
+      - ./proxy/apache/conf/httpd-ssl.conf:/usr/local/apache2/conf/extra/httpd-ssl.conf
+      - ./proxy/apache/vhosts:/usr/local/apache2/conf/vhosts
+      - ./../${ENV}/${APP_NAME}/${APP_FRONT_SERVICE}:/usr/local/apache2/htdocs/${APP_NAME}/${APP_FRONT_SERVICE}
+      - ./../${ENV}/${APP_NAME}/${APP_BACK_SERVICE}:/usr/local/apache2/htdocs/${APP_NAME}/${APP_BACK_SERVICE}
+    ports: 
+      - 80:80
+      - 443:443
+    networks: 
+      - proxy
+networks:
+  proxy:
+    name: ${APP_NAME}-proxy-network
+    driver: bridge
+    external: true  

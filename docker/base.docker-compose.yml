@@ -1,0 +1,6 @@
+services:
+  ubuntu-base:
+    build:
+      context: base
+      dockerfile: Dockerfile.ubuntu
+    image: ubuntu-base:local
