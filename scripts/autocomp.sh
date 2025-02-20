@@ -25,4 +25,5 @@ _completions(){
     return 0
 }
 
-eval "complete -F _completions ${APP_NAME}"
+
+complete -F _completions %APP_NAME%

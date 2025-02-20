@@ -8,7 +8,7 @@ services:
     container_name: ${APP_NAME}-php-fpm
     volumes: 
       - ../dev/${APP_DIRECTORY}/${APP_BACK_SERVICE}:/var/www/html
-      - ./core/php/fpm/base/cfg/www.conf:/etc/php/8.4/fpm/pool.d/www.conf
+     # - ./core/php/fpm/base/conf/www.conf:/etc/php/8.4/fpm/pool.d/www.conf
     networks: 
       - main
       - proxy
