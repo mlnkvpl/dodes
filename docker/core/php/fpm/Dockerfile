@@ -24,6 +24,8 @@ RUN mkdir -p /run/php && chown www-data:www-data /run/php
 
 RUN sed -i 's/;daemonize = yes/daemonize = no/' /etc/php/8.4/fpm/php-fpm.conf
 
+RUN sed -i 's/listen\s=.*/listen = 0.0.0.0:9000/' /etc/php/8.4/fpm/pool.d/www.conf
+
 
 WORKDIR /var/www/html
 

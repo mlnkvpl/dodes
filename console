@@ -3,7 +3,6 @@ IS_GLOBAL=0
 BASE=${BASH_SOURCE[0]}
 PARENT_DIR="$(dirname "$(dirname "$0")")"
 
-
 set -o allexport
 if [[ $BASE == "./console" ]]
 then
