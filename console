@@ -12,12 +12,12 @@ else
     IS_GLOBAL=1
     source ${BASE%"/bin/%APP_NAME%"}/.env 
     SOURCE=${BASE%"/bin/$APP_NAME"}
+    source $SOURCE/bin/autocomp.sh
 fi
 
 # IMPORTS
 source $SOURCE/docker/env/.env.$ENV
 source $SOURCE/scripts/install.sh
-source $SOURCE/scripts/autocomp.sh
 source $SOURCE/scripts/misc/colors.sh
 source $SOURCE/scripts/functions/base.sh
 source $SOURCE/scripts/select.sh

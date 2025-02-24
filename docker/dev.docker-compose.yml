@@ -60,7 +60,7 @@ services:
       - main
       - proxy
     ports: 
-      - 3000:3000
+      - ${NODEJS_PORT}:3000
   mysql:
     build:
       context: ./core/db/mysql
@@ -84,7 +84,7 @@ services:
         MYSQL_COLLATION: ${DB_COLLATION}
         GROUP_ID: ${GROUP_ID}  
     ports:
-      - 3306:${DB_PORT}
+      - ${DB_PORT}:3306
     volumes:
       - mysql:/var/lib/mysql
     networks:
