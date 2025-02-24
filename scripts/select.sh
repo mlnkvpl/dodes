@@ -1,82 +1,20 @@
 #!/bin/bash
 
+source $SOURCE/scripts/actions/base.sh
+
 # COMMAND PROMPT
 case $1 in
     dev)
-        case $2 in
-            init)
-                dev_init
-            ;;
-            up)
-                dev_up
-            ;;
-            down)
-                dev_down
-            ;;
-            restart)
-                dev_restart
-            ;;
-            clean)
-                dev_clean
-            ;;
-        esac
+        dev_actions ${@:2}
     ;;
     front)
-        case $2 in
-            init)
-                front_init
-            ;;
-            serve)
-                front_serve
-            ;;
-            build)
-                front_build
-            ;;
-            clean)
-                front_clean
-            ;;
-            backup)
-                front_backup
-            ;;
-            *)
-                front_terminal ${@:2}
-            ;;
-        esac
+        front_actions ${@:2}
     ;;
     back)
-        case $2 in
-            init)
-                back_init
-            ;;
-            clean)
-                back_clean
-            ;;
-            backup)
-                back_backup
-            ;;
-            *)
-                back_terminal ${@:2}
-            ;;
-        esac
+        back_actions ${@:2}
     ;;
     proxy)
-        case $2 in
-            init)
-                proxy_init
-            ;;
-            up)
-                proxy_up
-            ;;
-            down)
-                proxy_down
-            ;;
-            restart)
-                proxy_restart
-            ;;
-            *)
-                proxy_terminal ${@:2}
-            ;;
-        esac
+        proxy_actions ${@:2}
     ;;
     composer)
         tools_composer ${@:2}
@@ -95,5 +33,8 @@ case $1 in
     ;;
     uninstall)
         global_uninstall
+    ;;
+    help|*)
+        echo -e "Usage: select.sh [dev|front|back|proxy|composer|symfony|npm|version|install|uninstall] [action]"
     ;;
 esac

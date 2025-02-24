@@ -1,7 +1,7 @@
 #!/bin/bash
 
 app_path="$PWD/bin"
-autocomplete_script="$PWD/scripts/autocomp.sh"
+autocomplete_script="$PWD/bin/autocomp.sh"
 path_to_bashrc="$HOME/.bashrc"
 
 global_install(){
@@ -16,6 +16,6 @@ global_install(){
 
 global_uninstall(){
     rm -rf $SOURCE/bin &&
-    sed -z "s|\#${APP_NAME}\n.*\n\#${APP_NAME}||g" -i "$path_to_bashrc" &&
+    sed -z "s|\#${APP_NAME}\n.*\n\#${APP_NAME}\n||g" -i "$path_to_bashrc" &&
     echo -e "Run:\n${Cyan}source $path_to_bashrc${Color_Off}\n"  
 }
